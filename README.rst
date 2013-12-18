@@ -30,6 +30,9 @@ Find the (E)TLD::
     >>> psl.tld('parliament.uk')
     u'uk'
 
+Use a local copy of the public suffix list:
+  
+    >>> psl = publicsuffix.public_suffix_list(cached=True)
 
 Caching
 ~~~~~~~
