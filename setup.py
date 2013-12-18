@@ -18,4 +18,8 @@ setup(
     packages=['publicsuffix'],
 	package_dir={'publicsuffix': 'publicsuffix'},
 	package_data={'publicsuffix': ['public_suffix_list.txt']},
+
+	install_requires=[
+	  "httplib2 >= 2-0.8"
+	  ],
 )

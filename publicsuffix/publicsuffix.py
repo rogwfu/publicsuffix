@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os.path
 
 EFFECTIVE_TLD_NAMES = 'http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1'
 
@@ -281,18 +282,21 @@ class SuffixList(list):
         return host.rsplit('.', 1)[-1]
 
 
-def public_suffix_list(url=EFFECTIVE_TLD_NAMES, headers=None, http=None, tld_file=false):
+def public_suffix_list(url=EFFECTIVE_TLD_NAMES, headers=None, http=None, cached=False):
 	content = None
-	if tld_file:
-		tld_file = os.path.join(os.path.dirname(__file__), 'public_suffix_list.txt')
-		fp = open(tld_file)
-		content = fp.readlines()
-		fp.close()
+	tld_file = os.path.join(os.path.dirname(__file__), 'public_suffix_list.txt')
+	fp = open(tld_file, "r+")
+
+	if cached:
+		content = fp.read()
 	else:
 		if http is None:
 			import httplib2
 			http = httplib2.Http()
 		_response, content = http.request(url, headers=headers)
+		fp.write(content)
+
+	fp.close()
 	return SuffixList(content.splitlines())
 
 if __name__ == '__main__':
