@@ -281,13 +281,19 @@ class SuffixList(list):
         return host.rsplit('.', 1)[-1]
 
 
-def public_suffix_list(url=EFFECTIVE_TLD_NAMES, headers=None, http=None):
-    if http is None:
-        import httplib2
-        http = httplib2.Http()
-    _response, content = http.request(url, headers=headers)
-    return SuffixList(content.splitlines())
-
+def public_suffix_list(url=EFFECTIVE_TLD_NAMES, headers=None, http=None, tld_file=false):
+	content = None
+	if tld_file:
+		tld_file = os.path.join(os.path.dirname(__file__), 'public_suffix_list.txt')
+		fp = open(tld_file)
+		content = fp.readlines()
+		fp.close()
+	else:
+		if http is None:
+			import httplib2
+			http = httplib2.Http()
+		_response, content = http.request(url, headers=headers)
+	return SuffixList(content.splitlines())
 
 if __name__ == '__main__':
     import doctest

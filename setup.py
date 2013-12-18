@@ -15,5 +15,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    py_modules=['publicsuffix'],
+    packages=['publicsuffix'],
+	package_dir={'publicsuffix': 'publicsuffix'},
+	package_data={'publicsuffix': ['public_suffix_list.txt']},
 )
